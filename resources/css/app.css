@@ -1,3 +1,25 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+
+
+@font-face {
+    font-family: nunito-regular;
+    src: url(/fonts/nunito-regular.ttf);
+  }
+  
+  @font-face {
+    font-family: nunito-light;
+    src: url(/fonts/nunito-light.ttf);
+  }
+  
+  @font-face {
+    font-family: nunito-bold;
+    src: url(/fonts/nunito-bold.ttf);
+  }
+  
+  @font-face {
+    font-family: iransans-light;
+    src: url(/fonts/iransans-light-web.ttf);
+  }
+  
