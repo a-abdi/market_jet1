@@ -24,3 +24,9 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 Route::get('/', function () {
     return Inertia\Inertia::render('Home');
 })->name('home');
+
+
+Route::get('/goods/create', [App\Http\Controllers\GoodsController::class, 'create'])->name('goods.create');
+Route::post('/goods', [App\Http\Controllers\GoodsController::class, 'store'])->name('goods.store');
+
+
