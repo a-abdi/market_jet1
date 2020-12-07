@@ -4,10 +4,23 @@ namespace App\Http\Controllers;
 
 use App\Models\Goods;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use Illuminate\Support\Str;
+use App\Contracts\Repositories\GoodsRepositoryInterface;
+use App\Contracts\Repositories\CategoryRepositoryInterface;
+use Illuminate\Support\Facades\Storage;
 
 class GoodsController extends Controller
 {
+    protected $goods;
+    protected $category;
+
+    public function __construct(GoodsRepositoryInterface $goods, CategoryRepositoryInterface $category)
+    {
+        $this->goods = $goods;
+        $this->category = $category;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -23,9 +36,11 @@ class GoodsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        return Inertia::render('Goods/Create/Index');
+        // dd( $this->category->all());
+        $data = $this->category->all();
+        return Inertia::render('Goods/Create/Index', ['categories' => $data]);
     }
 
     /**
@@ -36,7 +51,23 @@ class GoodsController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
+        $goods_code = Str::random(8);
+        $user_id = Auth::id();
+        $category_id = ($this->category->search(['id'],'name', $request->category))[0]->id;
+        $path = $request->image->store('images', 'public');
+        $url = Storage::url($path);
+
+        $goods_object = [
+            'name'=> $request->name,
+            'category_id'=> $category_id,
+            'price'=> $request->price,
+            'discount'=> $request->discount,
+            'user_id'=> $user_id,
+            'image_src'=> $url,
+            'goods_code'=> $goods_code,
+        ];
+
+        $resulte = $this->goods->create($goods_object);
     }
 
     /**
@@ -45,9 +76,12 @@ class GoodsController extends Controller
      * @param  \App\Models\Goods  $goods
      * @return \Illuminate\Http\Response
      */
-    public function show(Goods $goods)
+    public function show(Goods $goods, $good_id)
     {
-        //
+        $good = $this->goods->find($good_id);
+        return Inertia::render('Goods/Show/Index', ['good' => $good]);
+        // return Inertia::render('Goods/Create/Index', ['categories' => $data]);
+
     }
 
     /**

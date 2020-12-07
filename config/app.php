@@ -177,6 +177,10 @@ return [
         App\Providers\FortifyServiceProvider::class,
         App\Providers\JetstreamServiceProvider::class,
 
+        App\Providers\Repositories\GoodsServiceProvider::class,
+        App\Providers\Repositories\CategoryServiceProvider::class,
+
+
     ],
 
     /*
