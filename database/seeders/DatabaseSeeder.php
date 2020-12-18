@@ -77,5 +77,8 @@ class DatabaseSeeder extends Seeder
             'name' => 'Home Appliances',
         ]))
         ->create();
+
+        \App\Models\Cart::factory(2000)->create();
+
     }
 }

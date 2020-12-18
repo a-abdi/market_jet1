@@ -179,10 +179,11 @@ return [
 
         App\Providers\Repositories\GoodsServiceProvider::class,
         App\Providers\Repositories\CategoryServiceProvider::class,
+        App\Providers\Repositories\CartServiceProvider::class,
 
 
     ],
-
+    
     /*
     |--------------------------------------------------------------------------
     | Class Aliases

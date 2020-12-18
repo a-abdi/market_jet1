@@ -11,12 +11,12 @@
             <div class="col-span-4">
                 <border/>
             </div>
-            <div class="col-span-1 mb-4 hover:shadow" v-for="(goods, i) in category.slice(0, 4)" :key="category[i].id">
-                <goods @go_to_good_info="go_to_good_info(category[i].id)">
-                    <template  #image> <img  :src="category[i].image_src" :alt="category[i].name"> </template>
-                    <template  #name> {{category[i].name}} </template>
-                    <template  #discount> {{category[i].discount}} </template>
-                    <template  #price> {{category[i].price}} </template>
+            <div class="col-span-1 mb-4 hover:shadow" v-for="(good) in goods.slice(0, 4)" :key="good.id">
+                <goods @go_to_good_info="go_to_good_info(good.id)">
+                    <template  #image> <img  :src="good.image_src" :alt="good.name"> </template>
+                    <template  #name> {{good.name}} </template>
+                    <template  #discount> {{good.discount}} </template>
+                    <template  #price> {{good.price}} </template>
                 </goods>
             </div>
         </div>
@@ -31,7 +31,7 @@
 
     export default { 
         props: {
-            category: Array
+            goods: Array
         },
 
         components: {
@@ -48,9 +48,10 @@
         },
 
         methods: {
-            go_to_good_info(good_id){
-                // alert(good_id);
+            go_to_good_info(good_id) {
+
                 this.$emit('go_to_good_info', good_id)
+
             }
         }
     }

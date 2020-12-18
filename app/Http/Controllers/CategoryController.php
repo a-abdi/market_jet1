@@ -10,11 +10,11 @@ use App\Contracts\Repositories\CategoryRepositoryInterface;
 class CategoryController extends Controller
 {
 
-    protected $model;
+    protected $category;
 
-    public function __construct(CategoryRepositoryInterface $model)
+    public function __construct(CategoryRepositoryInterface $category)
     {
-        $this->model = $model;
+        $this->category = $category;
     }
     /**
      * Display a listing of the resource.
@@ -44,7 +44,7 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $resulte = $this->model->create(['name'=> $request->name]);
+        $resulte = $this->category->create(['name'=> $request->name]);
     }
 
     /**

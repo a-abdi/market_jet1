@@ -14,7 +14,14 @@
 
                         <!-- if user auth -->
                         <!-- Navigation Links -->
-                        <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex" v-if="$page.auth.check">
+                        <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex" v-if="$page.data.auth_check">
+                            <jet-nav-link :href="route('cart.index')" :active="route().current('cart.index')">
+                                <span class="block  w-8 h-8 rounded-md text-xs text-red-600 text-right font-bold"
+                                :style="'background-size: cover; background-repeat: no-repeat; background-position: center center; background-image: url(/img/1.png);'">
+                                {{ $page.data.cart.length }}
+                                </span> 
+                            </jet-nav-link>
+                            
                             <jet-nav-link :href="route('dashboard')" :active="route().current('dashboard')">
                                 Dashboard
                             </jet-nav-link>
@@ -32,7 +39,7 @@
                     <!-- Settings Dropdown -->
                     <div class="hidden sm:flex sm:items-center sm:ml-6" >
                         <div class="ml-3 relative">
-                            <div v-if="!$page.auth.check" class="flex flex-row-reverse">
+                            <div v-if="!$page.data.auth_check" class="flex flex-row-reverse">
                                 <button @click="login" class="mx-1 px-1 flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition duration-150 ease-in-out">
                                     login
                                 </button>
@@ -40,7 +47,7 @@
                                     register
                                 </button>
                             </div> 
-                            <div v-if="$page.auth.check">
+                            <div v-if="$page.data.auth_check">
                                 <jet-dropdown align="right" width="48">
                                     <template #trigger>
                                         <button v-if="$page.jetstream.managesProfilePhotos" class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition duration-150 ease-in-out">
@@ -136,7 +143,7 @@
 
             <!-- Responsive Navigation Menu -->
             <div :class="{'block': showingNavigationDropdown, 'hidden': ! showingNavigationDropdown}" class="sm:hidden">
-                <div v-if="$page.auth.check">
+                <div v-if="$page.data.auth_check">
                     <div class="pt-2 pb-3 space-y-1">
                         <jet-responsive-nav-link :href="route('dashboard')" :active="route().current('dashboard')">
                             Dashboard

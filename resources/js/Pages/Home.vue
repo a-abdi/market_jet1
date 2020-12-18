@@ -1,9 +1,9 @@
 <template>
     <app-layout>
         <div class="py-12 mx-4">
-            <div v-for="goods in all_goods" :key="goods.category_name">
-                <Showcase @go_to_good_info="go_to_good_info($event)" v-if="goods.category[0]" :category = goods.category>
-                    <template  #title> {{goods.category_name}} </template>
+            <div v-for="(category, i) in categories" :key="category.goods[i].goods_code">
+                <Showcase @go_to_good_info="go_to_good_info($event)" v-if="category.goods[0]" :goods = category.goods>
+                    <template  #title> {{category.name}} </template>
                 </Showcase>
             </div>
         </div>
@@ -18,7 +18,7 @@
     export default {
 
         props: {
-            all_goods: Array
+            categories: Array
         },
 
         components: {

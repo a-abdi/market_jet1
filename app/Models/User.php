@@ -23,6 +23,11 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Models\Goods', 'user_id');
     }
+
+    public function cart()
+    {
+        return $this->hasOne('App\Models\Cart');
+    }
    
     /**
      * The attributes that are mass assignable.

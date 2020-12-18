@@ -30,3 +30,6 @@ Route::get('/goods/{good}', [App\Http\Controllers\GoodsController::class, 'show'
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/category/create', [App\Http\Controllers\CategoryController::class, 'create'])->name('category.create');
 Route::middleware(['auth:sanctum', 'verified'])->post('/category', [App\Http\Controllers\CategoryController::class, 'store'])->name('category.sore');
+
+Route::middleware(['auth:sanctum', 'verified'])->post('/cart', [App\Http\Controllers\CartController::class, 'store'])->name('cart.store');
+Route::middleware(['auth:sanctum', 'verified'])->get('/cart', [App\Http\Controllers\CartController::class, 'index'])->name('cart.index');

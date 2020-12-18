@@ -19,6 +19,11 @@ class Goods extends Model
         return $this->belongsTo('App\Models\category');
     }
 
+    public function cart()
+    {
+        return $this->belongsTo('App\Models\cart');
+    }
+
 
     /**
      * The attributes that are mass assignable.
@@ -37,6 +42,5 @@ class Goods extends Model
 
     protected $hidden = [
         'user_id',
-        'goods_code',
     ];
 }

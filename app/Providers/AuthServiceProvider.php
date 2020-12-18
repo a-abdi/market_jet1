@@ -26,11 +26,5 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
-
-        Inertia::share('auth', function (){
-            return[
-                'check' => Auth::check(),
-            ];
-        });
     }
 }
