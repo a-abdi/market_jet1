@@ -17,7 +17,7 @@ class CreateCartsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('good_id');
-            $table->enum('cart_status', [ 'bought', 'list_cart', 'next_list_card' ]);
+            $table->enum('cart_status', [ 'previous_cart', 'cart', 'next_cart']);
             $table->timestamps();
         });
     }

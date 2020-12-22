@@ -22,12 +22,12 @@ class CartFactory extends Factory
     public function definition()
     {
         $cart_status = array (
-            'bought',
-            'bought',
-            'bought',
-            'list_cart',            
-            'list_cart',
-            'next_list_card',
+            'previous_cart',
+            'previous_cart',
+            'previous_cart',
+            'cart',            
+            'cart',
+            'next_cart',
         );
         return [
             'user_id' => rand(1, 100),

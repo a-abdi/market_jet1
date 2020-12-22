@@ -33,3 +33,10 @@ Route::middleware(['auth:sanctum', 'verified'])->post('/category', [App\Http\Con
 
 Route::middleware(['auth:sanctum', 'verified'])->post('/cart', [App\Http\Controllers\CartController::class, 'store'])->name('cart.store');
 Route::middleware(['auth:sanctum', 'verified'])->get('/cart', [App\Http\Controllers\CartController::class, 'index'])->name('cart.index');
+Route::middleware(['auth:sanctum', 'verified'])->get('/cart/next', [App\Http\Controllers\CartController::class, 'next'])->name('cart.next');
+Route::middleware(['auth:sanctum', 'verified'])->get('/cart/previous', [App\Http\Controllers\CartController::class, 'previous'])->name('cart.previous');
+Route::middleware(['auth:sanctum', 'verified'])->patch('/cart/order', [App\Http\Controllers\CartController::class, 'order'])->name('cart.order');
+Route::middleware(['auth:sanctum', 'verified'])->patch('/cart/change', [App\Http\Controllers\CartController::class, 'change'])->name('cart.change');
+
+Route::middleware(['auth:sanctum', 'verified'])->get('/send/basicemail', [App\Http\Controllers\MailController::class, 'basic_email']);
+

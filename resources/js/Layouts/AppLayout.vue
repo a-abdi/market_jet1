@@ -18,7 +18,9 @@
                             <jet-nav-link :href="route('cart.index')" :active="route().current('cart.index')">
                                 <span class="block  w-8 h-8 rounded-md text-xs text-red-600 text-right font-bold"
                                 :style="'background-size: cover; background-repeat: no-repeat; background-position: center center; background-image: url(/img/1.png);'">
-                                {{ $page.data.cart.length }}
+                                <div v-if="$page.data.cart.length">
+                                    {{ $page.data.cart.length }}
+                                </div>
                                 </span> 
                             </jet-nav-link>
                             

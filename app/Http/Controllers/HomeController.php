@@ -24,10 +24,22 @@ class HomeController extends Controller
     public function index(Request $request)
     {
         $categories = [];
-        $category_list_show = ['Books','Digital', 'Clothing', 'Books'];
+        $category_list_show = ['Books', 'Digital', 'Digital', 'Clothing', 'Books'];
+
+        // best method has first stor id in  $category_list_show do not sore  name category then sort by calletion
+
+        // foreach ($category_list_show as $category_show) {
+        //             $category ['name'] = $category_show;
+        //             $category ['goods'] = Goods::where('category_name', $category_show)->orderBy('discount', 'desc')->take(16)->get();
+        //             break;
+        //         }
+        //     }
+        //     array_push($categories, $category);
+        // }
+
 
         $category_list_object = Category::whereIn('name', $category_list_show)->get();
-        
+
         foreach ($category_list_show as $category_show) {
             foreach($category_list_object as $category_object) {
                 if($category_show == $category_object->name) {

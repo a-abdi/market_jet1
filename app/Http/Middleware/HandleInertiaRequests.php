@@ -22,7 +22,7 @@ class HandleInertiaRequests
         Inertia::share('data', function() {
                 return[
                     'auth_check' => Auth::check(),
-                    'cart' =>  CartRepositoryInterface::get_shopping_cart(Auth::id()),
+                    'cart' =>  CartRepositoryInterface::get_cart(Auth::id(), 'cart'),
                 ];
             });
         return $next($request);

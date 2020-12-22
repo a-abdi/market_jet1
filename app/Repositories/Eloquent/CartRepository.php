@@ -16,14 +16,29 @@ class CartRepository extends BaseRepository implements CartRepositoryInterface
         parent::__construct($cart);
     }
 
-    public function get_shopping_cart($user_id) 
+    public function get_cart($user_id, $cart_status) 
     {
         return Goods::whereIn('id', 
             Cart::select('good_id')
                 ->where('user_id', $user_id)
-                ->where('cart_status', 'list_cart')
+                ->where('cart_status', $cart_status)
                 ->get())
             ->get();
+    }
+
+    public function order($user_id, $current_status, $next_status) 
+    {
+        return Cart::where('user_id', $user_id)
+                ->where('cart_status', $current_status)
+                ->update(['cart_status'=> $next_status]);
+    }
+
+    public function change_status($user_id, $good_id, $current_status, $next_status) 
+    {
+        return Cart::where('user_id', $user_id)
+                ->where('good_id', $good_id)
+                ->where('cart_status', $current_status)
+                ->update(['cart_status'=> $next_status]);
     }
 
 }

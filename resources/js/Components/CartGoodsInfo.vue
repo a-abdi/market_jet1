@@ -10,12 +10,16 @@
             </div>
         </div>
 
-        <div class="col-start-9 col-span-2 py-2 text-red-500">
-            <slot name="discount"> </slot>
+        <div class="col-start-9 col-span-2 py-2">
+           <span class="text-gray-600 text-sm">Discount: </span> <span class="text-red-500"> <slot name="discount"> </slot></span>
         </div>
 
+        <div class="col-start-3 col-span-6 py-2 flex item-center">
+            <slot> </slot>
+        </div>
+        
         <div class="col-start-9 col-span-2 py-2">
-            <slot name="price"> </slot>
+           <span class="text-gray-600 text-sm">Price: </span> <span class="text-gray-600"> <slot name="price"> </slot></span>
         </div>
     </div>
 </template>

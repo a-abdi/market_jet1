@@ -27,7 +27,7 @@ class CartController extends Controller
     {
         $user_id = Auth::id();
         $good_id = $request->good_id;
-        $cart_status = 'list_cart';
+        $cart_status = 'cart';
         $response = $this->cart->create([
             'user_id' => $user_id,
             'good_id' => $good_id,
@@ -39,7 +39,40 @@ class CartController extends Controller
 
     public function index() 
     {
-        return Inertia::render('Cart/Show/PurchaseCart');
+        return Inertia::render('Cart/Show/Cart');
+    }
+
+    public function change(Request $request)
+    {
+        $this->cart->change_status(Auth::id(), $request->good_id, $request->current_status, $request->next_status);
+
+        return redirect()->route('cart.index');
+    }
+
+    public function order(Request $request)
+    {
+        $this->cart->order(Auth::id(), $request->current_status, $request->next_status);
+
+        return redirect()->route('cart.index');
+    }
+
+
+    public function next()
+    {
+        return Inertia::render('Cart/Show/NextCart', 
+            [
+                'nextCart'=> $this->cart->get_cart(Auth::id(), 'next_cart')
+            ]
+        );
+    }
+
+    public function previous()
+    {
+        return Inertia::render('Cart/Show/PreviousCart', 
+            [
+                'previousCart'=> $this->cart->get_cart(Auth::id(), 'previous_cart')
+            ]
+        );
     }
 
 }
