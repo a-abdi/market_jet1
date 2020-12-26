@@ -6,6 +6,8 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\Gmail;
 
 class CreateNewUser implements CreatesNewUsers
 {
@@ -24,6 +26,15 @@ class CreateNewUser implements CreatesNewUsers
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => $this->passwordRules(),
         ])->validate();
+
+        $email = $input['email'];
+
+        $details = [
+            'title' => 'Tanks',
+            'body' => 'سلام بر همه',
+        ];
+
+        Mail::to($email)->send(new Gmail($details));
 
         return User::create([
             'name' => $input['name'],
