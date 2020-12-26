@@ -27759,10 +27759,11 @@ var render = function() {
                   ),
                   _vm._v(" "),
                   _c(
-                    "div",
+                    "inertia-link",
                     {
                       staticClass:
-                        "mx-2 px-2 py-1 inline-flex text-gray-600 text-sm cursor-pointer"
+                        "mx-2 px-2 py-1 inline-flex text-gray-600 text-sm cursor-pointer",
+                      attrs: { href: "/cart/" + good.id, method: "delete" }
                     },
                     [
                       _c("img", {
@@ -28043,10 +28044,11 @@ var render = function() {
                   ),
                   _vm._v(" "),
                   _c(
-                    "div",
+                    "inertia-link",
                     {
                       staticClass:
-                        "mx-2 px-2 py-1 inline-flex text-gray-600 text-sm cursor-pointer"
+                        "mx-2 px-2 py-1 inline-flex text-gray-600 text-sm cursor-pointer",
+                      attrs: { href: "/cart/" + good.id, method: "delete" }
                     },
                     [
                       _c("img", {
@@ -28219,22 +28221,23 @@ var render = function() {
                         staticClass: "w-5 h-5 mr-2",
                         attrs: { src: "/img/1.png", alt: "" }
                       }),
-                      _vm._v(" Add To Cart\n                        ")
+                      _vm._v(" Add To Cart\n                    ")
                     ]
                   ),
                   _vm._v(" "),
                   _c(
-                    "div",
+                    "inertia-link",
                     {
                       staticClass:
-                        "mx-2 px-2 py-1 inline-flex text-gray-600 text-sm cursor-pointer"
+                        "mx-2 px-2 py-1 inline-flex text-gray-600 text-sm cursor-pointer",
+                      attrs: { href: "/cart/" + good.id, method: "delete" }
                     },
                     [
                       _c("img", {
                         staticClass: "w-5 h-5 mr-2",
                         attrs: { src: "/img/remove.png", alt: "" }
                       }),
-                      _vm._v(" Remove From History\n                    ")
+                      _vm._v("  Remove From History\n                    ")
                     ]
                   )
                 ],

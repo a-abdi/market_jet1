@@ -41,4 +41,11 @@ class CartRepository extends BaseRepository implements CartRepositoryInterface
                 ->update(['cart_status'=> $next_status]);
     }
 
+    public function cart_destroy($user_id, $good_id)
+    {
+        return Cart::where('user_id', $user_id)
+                ->where('good_id', $good_id)
+                ->delete();
+    }
+
 }

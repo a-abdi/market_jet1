@@ -49,6 +49,12 @@ class CartController extends Controller
         return redirect()->route('cart.index');
     }
 
+    public function destroy($good)
+    {
+        $this->cart->cart_destroy(Auth::id(), $good);
+        return redirect()->route('cart.index');
+    }
+
     public function order(Request $request)
     {
         $this->cart->order(Auth::id(), $request->current_status, $request->next_status);

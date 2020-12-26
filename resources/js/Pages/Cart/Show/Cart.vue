@@ -27,9 +27,9 @@
                             <img src="/img/pluses.png" alt="" class="w-5 h-5 ml-2 cursor-pointer">
                         </div>
 
-                        <div class="mx-2 px-2 py-1 inline-flex text-gray-600 text-sm cursor-pointer">
+                        <inertia-link :href="'/cart/' + good.id " method="delete" class="mx-2 px-2 py-1 inline-flex text-gray-600 text-sm cursor-pointer">
                             <img src="/img/remove.png" alt="" class="w-5 h-5 mr-2"> Remove
-                        </div>
+                        </inertia-link>
 
                         <inertia-link href="/cart/change" method="patch" :data="{ good_id:good.id, current_status: 'cart', next_status: 'next_cart'}" class="mx-2 px-2 py-1 inline-flex text-gray-600 text-sm cursor-pointer">
                             <img src="/img/addList.png" alt="" class="w-5 h-5 mr-2"> Add To Next Cart

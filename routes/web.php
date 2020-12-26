@@ -37,6 +37,7 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/cart/next', [App\Http\Con
 Route::middleware(['auth:sanctum', 'verified'])->get('/cart/previous', [App\Http\Controllers\CartController::class, 'previous'])->name('cart.previous');
 Route::middleware(['auth:sanctum', 'verified'])->patch('/cart/order', [App\Http\Controllers\CartController::class, 'order'])->name('cart.order');
 Route::middleware(['auth:sanctum', 'verified'])->patch('/cart/change', [App\Http\Controllers\CartController::class, 'change'])->name('cart.change');
+Route::middleware(['auth:sanctum', 'verified'])->delete('/cart/{good}', [App\Http\Controllers\CartController::class, 'destroy'])->name('cart.destroy');
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/send/basicemail', [App\Http\Controllers\MailController::class, 'basic_email']);
 

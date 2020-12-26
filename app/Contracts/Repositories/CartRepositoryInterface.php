@@ -9,4 +9,6 @@ interface CartRepositoryInterface
     public function order($user_id, $current_status, $next_status);
 
     public function change_status($user_id, $good_id, $current_status, $next_status);
+
+    public function cart_destroy($user_id, $good_id);
 }
