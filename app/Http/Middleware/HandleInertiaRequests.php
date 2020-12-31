@@ -20,11 +20,13 @@ class HandleInertiaRequests
     public function handle(Request $request, Closure $next)
     {
         Inertia::share('data', function() {
-                return[
-                    'auth_check' => Auth::check(),
-                    'cart' =>  CartRepositoryInterface::get_cart(Auth::id(), 'cart'),
-                ];
-            });
+            return [
+                'user' => Auth::guard('admin')->user(),
+                'auth_check' => Auth::check(),
+                'cart' =>  CartRepositoryInterface::get_cart(Auth::id(), 'cart'),
+            ];
+        });
+
         return $next($request);
     }
 }

@@ -4,6 +4,9 @@
             <carts-link  :count ="$page.data.cart.length"/>
             <div class="grid grid-cols-4 mb-16">
                 <div class="col-span-3 bg-white border border-gray-200 rounded-lg">
+                    <div v-show="!$page.data.cart.length" class="text-red-600 text-center mt-8">
+                        There are no products in the cart
+                    </div>
                     <cart-goods-info v-for="good in $page.data.cart" :key="good.goods_code">
                         <template #image>
                             <inertia-link :href="'/goods/' +good.id" method="get">
@@ -15,6 +18,7 @@
                             <inertia-link :href="'/goods/' +good.id" method="get">
                                 {{ good.name }}
                             </inertia-link>
+
                         </template> 
 
                         <template #discount>
@@ -59,8 +63,16 @@
                         </div>
 
                          <div class="col-span-8 m-2 pb-2">
-                            <inertia-link href="/cart/order" method="patch" :data="{ current_status: 'cart', next_status: 'previous_cart'}">
-                                <button class="w-full rounded-lg bg-blue-400 p-2 border border-gray-200 font-semibold text-gray-900 tracking-widest hover:bg-blue-500 active:bg-blue-600 focus:outline-none focus:border-blue-800 focus:shadow-outline-gray transition ease-in-out duration-150">Purchase Cart</button>
+                            <inertia-link href="/cart/order" method="patch" :data="{ current_status: 'cart', next_status: 'previous_cart'}" v-if="$page.data.cart.length">
+                                <button class="w-full rounded-lg bg-blue-400 p-2 border border-gray-200 font-semibold text-gray-900 tracking-widest hover:bg-blue-500 active:bg-blue-600 focus:outline-none focus:border-blue-800 focus:shadow-outline-gray transition ease-in-out duration-150">
+                                    Purchase Cart
+                                </button>
+                            </inertia-link>
+
+                            <inertia-link href="/" method="get" v-if="!$page.data.cart.length">
+                                <button class="w-full rounded-lg bg-blue-400 p-2 border border-gray-200 font-semibold text-gray-900 tracking-widest hover:bg-blue-500 active:bg-blue-600 focus:outline-none focus:border-blue-800 focus:shadow-outline-gray transition ease-in-out duration-150">
+                                    Select Products
+                                </button>
                             </inertia-link>
                         </div>
                     </div>
