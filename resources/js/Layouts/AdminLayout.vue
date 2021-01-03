@@ -11,7 +11,7 @@
                                 <jet-application-mark class="block h-9 w-auto"/>
                             </inertia-link>
                         </div>
-                         <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex" v-if="$page.data.auth_check">
+                        <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex" v-if="$page.data.auth_check">
                             <jet-nav-link :href="route('admin.home')" :active="route().current('admin.home')">
                                 Dashboard
                             </jet-nav-link>
@@ -25,7 +25,7 @@
                                 <jet-dropdown align="right" width="48">
                                     <template #trigger>
                                         <button  class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
-                                            <div>{{ $page.data.user.name }}</div>
+                                            <div>{{ $page.data.admin_user.name }}</div>
 
                                             <div class="ml-1">
                                                 <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -41,7 +41,7 @@
                                             Manage Account
                                         </div>
 
-                                        <jet-dropdown-link :href="route('profile.show')">
+                                        <jet-dropdown-link href="">
                                             Profile
                                         </jet-dropdown-link>
 
@@ -84,13 +84,13 @@
                     <div class="pt-4 pb-1 border-t border-gray-200">
                         <div class="flex items-center px-4">
                             <div class="ml-3">
-                                <div class="font-medium text-base text-gray-800">{{ $page.data.user.name }}</div>
-                                <div class="font-medium text-sm text-gray-500">{{ $page.data.user.email }}</div>
+                                <div class="font-medium text-base text-gray-800">{{ $page.data.admin_user.name }}</div>
+                                <div class="font-medium text-sm text-gray-500">{{ $page.data.admin_user.email }}</div>
                             </div>
                         </div>
 
                         <div class="mt-3 space-y-1">
-                            <jet-responsive-nav-link :href="route('profile.show')" :active="route().current('profile.show')">
+                            <jet-responsive-nav-link href="" :active="route().current('profile.show')">
                                 Profile
                             </jet-responsive-nav-link>
 

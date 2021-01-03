@@ -21,9 +21,9 @@ class HandleInertiaRequests
     {
         Inertia::share('data', function() {
             return [
-                'user' => Auth::guard('admin')->user(),
-                'auth_check' => Auth::check(),
-                'cart' =>  CartRepositoryInterface::get_cart(Auth::id(), 'cart'),
+                'admin_user' => Auth::guard('admin')->user(),
+                'auth_check' => Auth::guard('web')->check(),
+                'cart' =>  CartRepositoryInterface::get_cart(Auth::guard('web')->id(), 'cart'),
             ];
         });
 

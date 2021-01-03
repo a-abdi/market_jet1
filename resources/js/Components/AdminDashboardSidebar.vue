@@ -1,6 +1,7 @@
 <template>
-   
-            <inertia-link href="" method="get" class="py-1 px-4 flex items-center">
+    <!-- <inertia-link href="" method="get" class=" "> -->
+        <div>
+            <div @click="dropGoods = dropDown(dropGoods)" class="w-full flex items-center py-1 pl-4">
                 <div class="inline-flex cursor-pointer">
                     <img src="/img/goods.png" alt="" class="w-5 h-5">
                 </div>
@@ -8,7 +9,37 @@
                 <div class="inline-flex cursor-pointer">
                     <span class="text-gray-500 md:text-sm text-xs pl-2">Goods</span>
                 </div>
-            </inertia-link>
+            </div>
+            <div v-show="dropGoods" class="pl-8 text-xs text-blue-400">
+                <div class="w-full my-2 cursor-pointer hover:text-red-400">
+                   <inertia-link href="/admin/goods/create" method="get" class=" ">
+                        Create Goods
+                    </inertia-link> 
+                </div>
+                <div class="w-full my-2 cursor-pointer hover:text-red-400">
+                    <inertia-link href="/admin/goods" :data="{ offset: 0, limit: 10 }"  class=" ">
+                        List Goods
+                    </inertia-link> 
+                </div>
+            </div>
+
+            <div @click="dropCategory = dropDown(dropCategory)" class="w-full flex items-center py-1 pl-4">
+                <div class="inline-flex cursor-pointer">
+                    <img src="/img/category.png" alt="" class="w-5 h-5">
+                </div>
+
+                <div class="inline-flex cursor-pointer">
+                    <span class="text-gray-500 md:text-sm text-xs pl-2">Category</span>
+                </div>
+            </div>
+            <div v-show="dropCategory">
+                <div>
+                    hi
+                </div>
+            </div>
+        </div>
+        
+    <!-- </inertia-link> -->
         <!-- <div class="col-span-2 my-2 flex item-center cursor-pointer">
             <img src="/img/category.png" alt="" class="w-5 h-5">
         </div>
@@ -23,3 +54,33 @@
             <span class="p-2 text-gray-500 text-sm">Carts</span>
         </div> -->
 </template>
+
+<script>
+    export default {
+
+       data () { 
+           return {
+
+               dropGoods: false,
+               dropCategory: false,
+
+           }
+       },
+
+       methods : {
+
+           dropDown(status) {
+               if(status) {
+
+                   return false
+
+               } else {
+
+                   return true
+
+               }
+           },
+
+       } 
+    }
+</script>

@@ -71,4 +71,9 @@ class BaseRepository implements EloquentRepositoryInterface
         return $this->model->where($type, $value)->get();
     }
 
+    public function get_bye_offset_limit($offset, $limit) 
+    {
+        return $this->model->offset($offset)->limit($limit)->get();
+    }
+
 }

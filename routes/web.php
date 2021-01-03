@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,13 +24,12 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-
-Route::middleware(['auth:sanctum', 'verified'])->get('/goods/create', [App\Http\Controllers\GoodsController::class, 'create'])->name('goods.create');
-Route::middleware(['auth:sanctum', 'verified'])->post('/goods', [App\Http\Controllers\GoodsController::class, 'store'])->name('goods.store');
+// Route::middleware(['auth:sanctum', 'verified'])->get('/goods/create', [App\Http\Controllers\GoodsController::class, 'create'])->name('goods.create');
+// Route::middleware(['auth:sanctum', 'verified'])->post('/goods', [App\Http\Controllers\GoodsController::class, 'store'])->name('goods.store');
 Route::get('/goods/{good}', [App\Http\Controllers\GoodsController::class, 'show'])->name('goods.show');
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/category/create', [App\Http\Controllers\CategoryController::class, 'create'])->name('category.create');
-Route::middleware(['auth:sanctum', 'verified'])->post('/category', [App\Http\Controllers\CategoryController::class, 'store'])->name('category.sore');
+// Route::middleware(['auth:sanctum', 'verified'])->get('/category/create', [App\Http\Controllers\CategoryController::class, 'create'])->name('category.create');
+// Route::middleware(['auth:sanctum', 'verified'])->post('/category', [App\Http\Controllers\CategoryController::class, 'store'])->name('category.sore');
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/cart', [App\Http\Controllers\CartController::class, 'index'])->name('cart.index');
 Route::middleware(['auth:sanctum', 'verified'])->get('/cart/next', [App\Http\Controllers\CartController::class, 'next'])->name('cart.next');
@@ -56,5 +56,6 @@ Route::prefix('/admin')->name('admin.')->group(function() {
     Route::get('/password/reset/{token}', [App\Http\Controllers\Admin\Auth\ForgotPasswordController::class, 'showResetForm'])->name('password.reset');
     Route::post('/password/reset', [App\Http\Controllers\Admin\Auth\ForgotPasswordController::class, 'reset'])->name('password.update');
 
+    Route::post('/goods/{good_id}', [App\Http\Controllers\Admin\GoodsController::class, 'update'])->middleware('auth:admin');
     Route::resource('goods', App\Http\Controllers\Admin\GoodsController::class)->middleware('auth:admin');
   });

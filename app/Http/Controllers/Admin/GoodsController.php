@@ -27,9 +27,17 @@ class GoodsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        return Inertia::render('Admin/Dashboard/Goods/List',
+            [
+                'goods' => $this->goods->get_goods_bye_offset_limit(
+                    $request->offset, $request->limit
+                ),
+
+                'categories' => $this->category->all(),
+            ]
+        );
     }
 
     /**
@@ -39,9 +47,10 @@ class GoodsController extends Controller
      */
     public function create(Request $request)
     {
-        // dd('welcome to create admin');
-        $data = $this->category->all();
-        return Inertia::render('Goods/Create/Index', ['categories' => $data]);
+        return Inertia::render('Admin/Dashboard/Goods/Create', 
+        [
+            'categories' => $this->category->all()
+        ]);
     }
 
     /**
@@ -53,7 +62,7 @@ class GoodsController extends Controller
     public function store(Request $request)
     {
         $goods_code = Str::random(8);
-        $user_id = Auth::id();
+        $user_id = Auth::guard('admin')->id();
         $category_id = ($this->category->search(['id'],'name', $request->category))[0]->id;
         $path = $request->image->store('images', 'public');
         $url = Storage::url($path);
@@ -69,6 +78,7 @@ class GoodsController extends Controller
         ];
 
         $resulte = $this->goods->create($goods_object);
+        return redirect()->route('admin.goods.create');
     }
 
     /**
@@ -81,8 +91,6 @@ class GoodsController extends Controller
     {
         $good = $this->goods->find($good_id);
         return Inertia::render('Goods/Show/Index', ['good' => $good]);
-        // return Inertia::render('Goods/Create/Index', ['categories' => $data]);
-
     }
 
     /**
@@ -91,9 +99,15 @@ class GoodsController extends Controller
      * @param  \App\Models\Goods  $goods
      * @return \Illuminate\Http\Response
      */
-    public function edit(Goods $goods)
+    public function edit(Goods $goods, $good_id)
     {
-        //
+        $categories = $this->category->all();
+        $good = $this->goods->get_good('category', $good_id);
+        return Inertia::render('Admin/Dashboard/Goods/Edit', 
+        [
+            'good'=> $good,
+            'categories' => $categories,
+        ]);
     }
 
     /**
@@ -103,9 +117,35 @@ class GoodsController extends Controller
      * @param  \App\Models\Goods  $goods
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Goods $goods)
+    public function update(Request $request, $good_id)
     {
-        //
+        $good = [];
+
+        if($request->image) {
+            $good['image_src'] = Storage::url($request->image->store('images', 'public'));
+        }
+
+        if($request->category) {
+            $good['category_id'] = ($this->category->search(['id'],'name', $request->category))[0]->id;
+        }
+
+        if($request->name) {
+            $good['name'] = $request->name;
+        }
+
+        if($request->price) {
+            $good['price'] = $request->price;
+        }
+
+        if($request->discount) {
+            $good['discount'] = $request->discount;
+        }
+
+        if($good) {
+            $this->goods->update($good, $good_id);
+        }
+
+        return redirect()->route('admin.goods.index', $request->all());
     }
 
     /**
@@ -114,8 +154,9 @@ class GoodsController extends Controller
      * @param  \App\Models\Goods  $goods
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Goods $goods)
+    public function destroy(Goods $goods,  $good_id)
     {
-        //
+        $this->goods->delete( $good_id );
+        return redirect()->back();
     }
 }

@@ -27,14 +27,6 @@
                             <jet-nav-link :href="route('dashboard')" :active="route().current('dashboard')">
                                 Dashboard
                             </jet-nav-link>
-
-                            <jet-nav-link :href="route('goods.create')" :active="route().current('goods.create')">
-                                Register Goods
-                            </jet-nav-link>
-                            
-                             <jet-nav-link :href="route('category.create')" :active="route().current('category.create')">
-                                Add Category
-                            </jet-nav-link>                             
                         </div>
                     </div>
 

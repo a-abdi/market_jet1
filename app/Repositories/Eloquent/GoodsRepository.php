@@ -15,4 +15,15 @@ class GoodsRepository extends BaseRepository implements GoodsRepositoryInterface
         $this->model = $model;
         parent::__construct($model);
     }
+
+    public function get_goods_bye_offset_limit($offset, $limit) 
+    {
+        return $this->model->with('category')->offset($offset)->limit($limit)->get();
+    }
+
+    public function get_good($relationsi, $good_id) 
+    {
+        return Goods::with($relationsi)->where('id', $good_id)->get();
+    }
+    
 }
