@@ -2001,21 +2001,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -4792,6 +4777,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       updating: false,
+      row: false,
       form: {
         id: null,
         name: null,
@@ -4815,19 +4801,21 @@ __webpack_require__.r(__webpack_exports__);
       var url = new URL(url_string);
       return parseInt(url.searchParams.get("offset"));
     },
-    update: function update(user) {
+    update: function update(user, row) {
       if (this.updating) {
         return false;
       }
 
       this.form.name = user.name;
       this.form.email = user.email;
+      this.row = row;
       this.updating = true;
       return true;
     },
     submit: function submit() {
       if (this.form.id) {
         this.updating = false;
+        this.editUser.row[this.row] = false;
         this.$inertia.patch('/admin/users/' + this.form.id, {
           name: this.form.name,
           email: this.form.email,
@@ -25197,19 +25185,6 @@ var render = function() {
           [
             _c(
               "inertia-link",
-              { staticClass: " ", attrs: { href: "/admin/categories/create" } },
-              [_vm._v("\n                    Create User\n                ")]
-            )
-          ],
-          1
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "w-full my-2 cursor-pointer hover:text-red-400" },
-          [
-            _c(
-              "inertia-link",
               {
                 staticClass: " ",
                 attrs: { href: "/admin/users", data: { offset: 0, limit: 6 } }
@@ -26180,41 +26155,29 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "grid grid-cols-9 py-3" }, [
-    _c(
-      "div",
-      {
-        staticClass: "col-span-4 flex justify-end mx-1 cursor-pointer",
+    _c("div", { staticClass: "col-span-4 flex justify-end mx-1" }, [
+      _c("img", {
+        staticClass: "w-8 h-8 cursor-pointer",
+        attrs: { src: "/img/previous.png", alt: "" },
         on: {
           click: function($event) {
             return _vm.previous_page()
           }
         }
-      },
-      [
-        _c("img", {
-          staticClass: "w-8 h-8",
-          attrs: { src: "/img/previous.png", alt: "" }
-        })
-      ]
-    ),
+      })
+    ]),
     _vm._v(" "),
-    _c(
-      "div",
-      {
-        staticClass: "sol-span-5 mx-1",
+    _c("div", { staticClass: "sol-span-5 mx-1" }, [
+      _c("img", {
+        staticClass: "w-8 h-8 cursor-pointer",
+        attrs: { src: "/img/next.png", alt: "" },
         on: {
           click: function($event) {
             return _vm.next_page()
           }
         }
-      },
-      [
-        _c("img", {
-          staticClass: "w-8 h-8 cursor-pointer",
-          attrs: { src: "/img/next.png", alt: "" }
-        })
-      ]
-    )
+      })
+    ])
   ])
 }
 var staticRenderFns = []
@@ -30918,7 +30881,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("admin-layout", [
     _c("div", { staticClass: "w-screen h-screan overflow-auto" }, [
-      _c("div", { staticClass: "sm:w-full w-768 my-4 px-2" }, [
+      _c("div", { staticClass: "lg:w-full w-1024 my-4 px-2" }, [
         _c(
           "div",
           { staticClass: "float-left lg:w-2/12 w-3/12" },
@@ -31127,7 +31090,7 @@ var render = function() {
                                 attrs: { type: "button" },
                                 on: {
                                   click: function($event) {
-                                    _vm.editUser.row[i] = _vm.update(user)
+                                    _vm.editUser.row[i] = _vm.update(user, i)
                                   }
                                 }
                               },
@@ -31144,36 +31107,11 @@ var render = function() {
                                 staticClass:
                                   "px-2 py-1 rounded-md bg-blue-500 hover:bg-blue-700 focus:outline-none text-sm tracking-widest",
                                 class: { hidden: !_vm.editUser.row[i] },
-                                attrs: { type: "submit" },
-                                on: {
-                                  click: function($event) {
-                                    _vm.editUser.row[i] = false
-                                  }
-                                }
+                                attrs: { type: "submit" }
                               },
                               [
                                 _vm._v(
                                   " \n                                Update \n                            "
-                                )
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "button",
-                              {
-                                staticClass:
-                                  "px-2 py-1 rounded-md bg-blue-500 hover:bg-blue-700 focus:outline-none text-sm tracking-widest",
-                                class: { hidden: !_vm.editUser.row[i] },
-                                attrs: { type: "button" },
-                                on: {
-                                  click: function($event) {
-                                    _vm.editUser.row[i] = _vm.updateCancel()
-                                  }
-                                }
-                              },
-                              [
-                                _vm._v(
-                                  " \n                                Cancel \n                            "
                                 )
                               ]
                             )
@@ -31214,12 +31152,13 @@ var render = function() {
                             "td",
                             {
                               staticClass:
-                                "flex items-center justify-center py-2"
+                                "flex items-center justify-center h-20"
                             },
                             [
                               user.profile_photo_path
                                 ? _c("img", {
                                     staticClass: "w-16 h-16 rounded-full",
+                                    class: { hidden: _vm.editUser.row[i] },
                                     attrs: {
                                       src:
                                         "/storage/" + user.profile_photo_path,
@@ -31228,11 +31167,32 @@ var render = function() {
                                   })
                                 : _c("img", {
                                     staticClass: "rounded-full",
+                                    class: { hidden: _vm.editUser.row[i] },
                                     attrs: {
                                       src: user.profile_photo_url,
                                       alt: user.name
                                     }
-                                  })
+                                  }),
+                              _vm._v(" "),
+                              _c(
+                                "button",
+                                {
+                                  staticClass:
+                                    "px-2 py-1 rounded-md bg-blue-500 hover:bg-blue-700 focus:outline-none text-sm tracking-widest",
+                                  class: { hidden: !_vm.editUser.row[i] },
+                                  attrs: { type: "button" },
+                                  on: {
+                                    click: function($event) {
+                                      _vm.editUser.row[i] = _vm.updateCancel()
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    " \n                                Cancel \n                            "
+                                  )
+                                ]
+                              )
                             ]
                           )
                         ]

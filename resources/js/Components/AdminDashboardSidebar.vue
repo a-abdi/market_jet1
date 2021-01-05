@@ -50,11 +50,11 @@
                 </div>
             </div>
             <div v-show="dropUser" class="pl-8 text-xs text-blue-400">
-               <div class="w-full my-2 cursor-pointer hover:text-red-400">
+               <!-- <div class="w-full my-2 cursor-pointer hover:text-red-400">
                    <inertia-link href="/admin/categories/create"  class=" ">
                         Create User
                     </inertia-link> 
-                </div>
+                </div> -->
 
                 <div class="w-full my-2 cursor-pointer hover:text-red-400">
                     <inertia-link href="/admin/users" :data="{ offset: 0, limit: 6 }"  class=" ">
@@ -63,21 +63,6 @@
                 </div>
             </div>
         </div>
-        
-    <!-- </inertia-link> -->
-        <!-- <div class="col-span-2 my-2 flex item-center cursor-pointer">
-            <img src="/img/category.png" alt="" class="w-5 h-5">
-        </div>
-        <div class="col-span-8 my-2 flex item-center cursor-pointer">
-            <span class="p-2 text-gray-500 text-sm">Categories</span>
-        </div>
-
-        <div class="col-span-2 my-2 flex item-center cursor-pointer">
-            <img src="/img/cart.png" alt="" class="w-5 h-5">
-        </div>
-        <div class="col-span-8 my-2 flex item-center cursor-pointer">
-            <span class="p-2 text-gray-500 text-sm">Carts</span>
-        </div> -->
 </template>
 
 <script>

@@ -1,7 +1,7 @@
 <template>
     <admin-layout>
         <div class="w-screen h-screan overflow-auto">
-            <div class="sm:w-full w-768 my-4 px-2">
+            <div class="lg:w-full w-1024 my-4 px-2">
                 <div class="float-left lg:w-2/12 w-3/12">
                     <admin-dashboard-sidebar class="mr-2 border border-gray-200 rounded-md">
                         

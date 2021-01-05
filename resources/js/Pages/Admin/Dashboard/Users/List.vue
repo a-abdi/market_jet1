@@ -27,14 +27,11 @@
                             </td>
 
                             <td class="">
-                                <button type="button" :class="{'hidden': editUser.row[i]}" @click="editUser.row[i] = update(user)" class="px-2 py-1 rounded-md bg-blue-500 hover:bg-blue-700 focus:outline-none text-sm tracking-widest"> 
+                                <button type="button" :class="{'hidden': editUser.row[i]}" @click="editUser.row[i] = update(user, i)" class="px-2 py-1 rounded-md bg-blue-500 hover:bg-blue-700 focus:outline-none text-sm tracking-widest"> 
                                     Edit 
                                 </button>
-                                <button @click="editUser.row[i] = false" type="submit" :class="{'hidden': !editUser.row[i]}" class="px-2 py-1 rounded-md bg-blue-500 hover:bg-blue-700 focus:outline-none text-sm tracking-widest"> 
+                                <button type="submit" :class="{'hidden': !editUser.row[i]}" class="px-2 py-1 rounded-md bg-blue-500 hover:bg-blue-700 focus:outline-none text-sm tracking-widest"> 
                                     Update 
-                                </button>
-                                <button @click="editUser.row[i] = updateCancel()" type="button" :class="{'hidden': !editUser.row[i]}" class="px-2 py-1 rounded-md bg-blue-500 hover:bg-blue-700 focus:outline-none text-sm tracking-widest"> 
-                                    Cancel 
                                 </button>
                             </td>
 
@@ -46,9 +43,12 @@
                                 </inertia-link >
                             </td>
 
-                            <td class="flex items-center justify-center py-2">
-                                <img v-if="user.profile_photo_path" :src="'/storage/'+ user.profile_photo_path" :alt="user.name" class="w-16 h-16 rounded-full">
-                                <img v-else :src="user.profile_photo_url" :alt="user.name" class="rounded-full">
+                            <td class="flex items-center justify-center h-20">
+                                <img :class="{'hidden': editUser.row[i]}" v-if="user.profile_photo_path" :src="'/storage/'+ user.profile_photo_path" :alt="user.name" class="w-16 h-16 rounded-full">
+                                <img :class="{'hidden': editUser.row[i]}" v-else :src="user.profile_photo_url" :alt="user.name" class="rounded-full">
+                                <button @click="editUser.row[i] = updateCancel()" type="button" :class="{'hidden': !editUser.row[i]}" class="px-2 py-1 rounded-md bg-blue-500 hover:bg-blue-700 focus:outline-none text-sm tracking-widest"> 
+                                    Cancel 
+                                </button>
                             </td>
                         </tr>
                     </tbody>
@@ -78,6 +78,7 @@
         data() { 
             return {
                 updating: false,
+                row: false,
                 form: {
                     id: null,
                     name: null,
@@ -98,21 +99,19 @@
 
         methods: {
             getOffset() {
-
                 var url_string = window.location.href;
                 var url = new URL(url_string);
                 return parseInt(url.searchParams.get("offset")) ;
-
             },
 
-            update(user) {
+            update(user, row) {
                 if(this.updating) {
                     return false
                 }
 
                 this.form.name = user.name
                 this.form.email = user.email
-
+                this.row = row
                 this.updating = true;
                 return true
             },
@@ -120,6 +119,7 @@
             submit() {
                 if(this.form.id) {
                     this.updating = false
+                    this.editUser.row[this.row] = false
                     this.$inertia.patch('/admin/users/'+ this.form.id,
                         { 
                             name: this.form.name, 
