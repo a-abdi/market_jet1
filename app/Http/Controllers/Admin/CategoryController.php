@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
+
 
 use App\Models\Category;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use App\Contracts\Repositories\CategoryRepositoryInterface;
 
 class CategoryController extends Controller
@@ -33,9 +35,9 @@ class CategoryController extends Controller
      */
     public function create()
     {
-       return inertia::render('Category/Create/Index');
+       return inertia::render('Admin/Dashboard/Category/Add');
     }
-
+    
     /**
      * Store a newly created resource in storage.
      *
@@ -45,6 +47,7 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $resulte = $this->category->create(['name'=> $request->name]);
+        return redirect()->back();
     }
 
     /**

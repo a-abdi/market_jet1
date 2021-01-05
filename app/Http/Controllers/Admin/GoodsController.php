@@ -90,7 +90,7 @@ class GoodsController extends Controller
     public function show(Goods $goods, $good_id)
     {
         $good = $this->goods->find($good_id);
-        return Inertia::render('Goods/Show/Index', ['good' => $good]);
+        return Inertia::render('Admin/Dashboard/Goods/Show', ['good' => $good]);
     }
 
     /**
@@ -101,13 +101,7 @@ class GoodsController extends Controller
      */
     public function edit(Goods $goods, $good_id)
     {
-        $categories = $this->category->all();
-        $good = $this->goods->get_good('category', $good_id);
-        return Inertia::render('Admin/Dashboard/Goods/Edit', 
-        [
-            'good'=> $good,
-            'categories' => $categories,
-        ]);
+        //
     }
 
     /**

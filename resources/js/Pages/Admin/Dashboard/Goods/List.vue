@@ -2,9 +2,9 @@
     <index>
         <div class="mr-2">
             <form @submit.prevent="submit">
-                <table class="table-fixed w-full border border-gray-200">
+                <table class="table-fixed w-full border-collapse border border-gray-400">
                     <thead>
-                        <tr>
+                        <tr class="bg-gray-400">
                             <th class="w-1/12 text-sm">Id</th>
                             <th class="w-2/12 text-sm">Name</th>
                             <th class="w-1/12 text-sm">Goods Code</th>
@@ -17,7 +17,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(good, i) in goods" :key="good.id" :class=" bg_color + ( parseInt(i % 2 + 1)) * 100">
+                        <tr class=" border border-gray-400" v-for="(good, i) in goods" :key="good.id" :class=" bg_color + ( parseInt(i % 2 + 1)) * 100">
                             <td class="text-center text-xs text-gray-600">
                                 {{ good.id }}
                             </td>

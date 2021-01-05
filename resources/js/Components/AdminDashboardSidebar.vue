@@ -29,12 +29,37 @@
                 </div>
 
                 <div class="inline-flex cursor-pointer">
-                    <span class="text-gray-500 md:text-sm text-xs pl-2">Category</span>
+                    <span class="text-gray-500 md:text-sm text-xs pl-2">Categories</span>
                 </div>
             </div>
-            <div v-show="dropCategory">
-                <div>
-                    hi
+            <div v-show="dropCategory" class="pl-8 text-xs text-blue-400">
+               <div class="w-full my-2 cursor-pointer hover:text-red-400">
+                   <inertia-link href="/admin/categories/create" method="get" class=" ">
+                        Create Category
+                    </inertia-link> 
+                </div>
+            </div>
+
+            <div @click="dropUser = dropDown(dropUser)" class="w-full flex items-center py-1 pl-4">
+                <div class="inline-flex cursor-pointer">
+                    <img src="/img/user.png" alt="" class="w-5 h-5">
+                </div>
+
+                <div class="inline-flex cursor-pointer">
+                    <span class="text-gray-500 md:text-sm text-xs pl-2">Users</span>
+                </div>
+            </div>
+            <div v-show="dropUser" class="pl-8 text-xs text-blue-400">
+               <div class="w-full my-2 cursor-pointer hover:text-red-400">
+                   <inertia-link href="/admin/categories/create"  class=" ">
+                        Create User
+                    </inertia-link> 
+                </div>
+
+                <div class="w-full my-2 cursor-pointer hover:text-red-400">
+                    <inertia-link href="/admin/users" :data="{ offset: 0, limit: 6 }"  class=" ">
+                        List User
+                    </inertia-link> 
                 </div>
             </div>
         </div>
@@ -63,6 +88,7 @@
 
                dropGoods: false,
                dropCategory: false,
+               dropUser: false,
 
            }
        },

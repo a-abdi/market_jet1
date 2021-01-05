@@ -180,6 +180,7 @@ return [
         App\Providers\Repositories\GoodsServiceProvider::class,
         App\Providers\Repositories\CategoryServiceProvider::class,
         App\Providers\Repositories\CartServiceProvider::class,
+        App\Providers\Repositories\UserServiceProvider::class,
 
 
     ],

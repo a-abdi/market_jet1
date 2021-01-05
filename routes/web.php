@@ -28,7 +28,6 @@ Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('ho
 // Route::middleware(['auth:sanctum', 'verified'])->post('/goods', [App\Http\Controllers\GoodsController::class, 'store'])->name('goods.store');
 Route::get('/goods/{good}', [App\Http\Controllers\GoodsController::class, 'show'])->name('goods.show');
 
-// Route::middleware(['auth:sanctum', 'verified'])->get('/category/create', [App\Http\Controllers\CategoryController::class, 'create'])->name('category.create');
 // Route::middleware(['auth:sanctum', 'verified'])->post('/category', [App\Http\Controllers\CategoryController::class, 'store'])->name('category.sore');
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/cart', [App\Http\Controllers\CartController::class, 'index'])->name('cart.index');
@@ -58,4 +57,9 @@ Route::prefix('/admin')->name('admin.')->group(function() {
 
     Route::post('/goods/{good_id}', [App\Http\Controllers\Admin\GoodsController::class, 'update'])->middleware('auth:admin');
     Route::resource('goods', App\Http\Controllers\Admin\GoodsController::class)->middleware('auth:admin');
-  });
+  
+    Route::resource('categories', App\Http\Controllers\Admin\CategoryController::class)->middleware('auth:admin');
+
+    Route::resource('users', App\Http\Controllers\Admin\UserController::class)->middleware('auth:admin');
+
+});
