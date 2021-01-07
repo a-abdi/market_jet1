@@ -4460,6 +4460,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
@@ -4490,7 +4495,7 @@ __webpack_require__.r(__webpack_exports__);
       photoPreview: null,
       data: new FormData(),
       goodID: null,
-      form: {
+      form: this.$inertia.form({
         name: null,
         category: '',
         photo: null,
@@ -4498,7 +4503,7 @@ __webpack_require__.r(__webpack_exports__);
         discount: null,
         totalPrice: null,
         percentageDiscount: null
-      }
+      })
     };
   },
   methods: {
@@ -4566,6 +4571,8 @@ __webpack_require__.r(__webpack_exports__);
     },
     updateEdit: function updateEdit(nameValueChange, value, goodID) {
       this.data.append(nameValueChange, value);
+      this.data.append('discount', this.form.discount);
+      this.data.append('price', this.form.price);
       this.goodID = goodID;
     }
   },
@@ -4595,6 +4602,13 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       return "bg-red-";
+    },
+    error: function error() {
+      if (Object.entries(this.$page.errors).length) {
+        for (var key in this.$page.errors) {
+          return this.$page.errors[key];
+        }
+      }
     }
   },
   watch: {}
@@ -30538,7 +30552,7 @@ var render = function() {
                             staticClass:
                               "w-full mx-1 px-2 py-0.5 focus:outline-none focus:ring border focus:border-blue-300 rounded text-center",
                             class: { hidden: !_vm.updateGood.row[i] },
-                            attrs: { type: "number", step: "any", min: "1" },
+                            attrs: { type: "number", step: "any" },
                             domProps: { value: _vm.form.price },
                             on: {
                               change: function($event) {
@@ -30581,7 +30595,7 @@ var render = function() {
                             staticClass:
                               "w-full mx-1 px-2 py-0.5 focus:outline-none focus:ring border focus:border-blue-300 rounded text-center ml-2",
                             class: { hidden: !_vm.updateGood.row[i] },
-                            attrs: { type: "number", step: "any", min: "0" },
+                            attrs: { type: "number", step: "any" },
                             domProps: { value: _vm.form.discount },
                             on: {
                               change: function($event) {
@@ -30755,11 +30769,22 @@ var render = function() {
       )
     ]),
     _vm._v(" "),
-    _c("div", { staticClass: "grid grid-cols-9 py-3" }, [
+    _c("div", { staticClass: "grid grid-cols-10 py-3" }, [
+      _vm.error
+        ? _c(
+            "div",
+            {
+              staticClass:
+                "col-span-full bg-red-300 rounded-md text-gray-500 text-center mt-1 text-sm"
+            },
+            [_vm._v("\n            " + _vm._s(_vm.error) + "\n        ")]
+          )
+        : _vm._e(),
+      _vm._v(" "),
       _c(
         "div",
         {
-          staticClass: "col-span-4 flex justify-end mx-1 cursor-pointer",
+          staticClass: "col-span-5 flex justify-end mx-1 cursor-pointer",
           on: {
             click: function($event) {
               return _vm.previous_page()

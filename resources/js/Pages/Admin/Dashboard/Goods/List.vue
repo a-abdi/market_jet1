@@ -42,12 +42,12 @@
 
                             <td class="text-center text-xs text-gray-600">
                                 <span :class="{'hidden': updateGood.row[i]}">{{ good.price }}</span>
-                                <input :class="{ 'hidden': !updateGood.row[i] }" type="number" step="any" min="1" v-model="form.price" @change="updateEdit('price', form.price, good.id)" class="w-full mx-1 px-2 py-0.5 focus:outline-none focus:ring border focus:border-blue-300 rounded text-center">
+                                <input :class="{ 'hidden': !updateGood.row[i] }" type="number" step="any" v-model="form.price" @change="updateEdit('price', form.price, good.id)" class="w-full mx-1 px-2 py-0.5 focus:outline-none focus:ring border focus:border-blue-300 rounded text-center">
                             </td>
 
                             <td class="text-center text-xs text-gray-600">
                                 <span :class="{'hidden': updateGood.row[i]}">{{ good.discount }}</span>
-                                <input :class="{ 'hidden': !updateGood.row[i] }" type="number" step="any" min="0" v-model="form.discount" @change="updateEdit('discount', form.discount, good.id)" class="w-full mx-1 px-2 py-0.5 focus:outline-none focus:ring border focus:border-blue-300 rounded text-center ml-2">
+                                <input :class="{ 'hidden': !updateGood.row[i] }" type="number" step="any" v-model="form.discount" @change="updateEdit('discount', form.discount, good.id)" class="w-full mx-1 px-2 py-0.5 focus:outline-none focus:ring border focus:border-blue-300 rounded text-center ml-2">
                             </td>
 
                             <td class="flex items-center place-content-center py-1">
@@ -84,10 +84,15 @@
                 </table>
             </form>
         </div>
-        <div class="grid grid-cols-9 py-3">
-            <div @click="previous_page()" class="col-span-4 flex justify-end mx-1 cursor-pointer">
+        <div class="grid grid-cols-10 py-3">
+            <div v-if="error" class="col-span-full bg-red-300 rounded-md text-gray-500 text-center mt-1 text-sm">
+                {{error}}
+            </div>
+
+            <div @click="previous_page()" class="col-span-5 flex justify-end mx-1 cursor-pointer">
                 <img class="w-5 h-5" src="/img/previous.png" alt="">
             </div>
+
             <div @click="next_page()" class="sol-span-5 mx-1">
                 <img class="w-5 h-5 cursor-pointer" src="/img/next.png" alt="">
             </div>
@@ -132,7 +137,7 @@
                 photoPreview: null,
                 data: new FormData(),
                 goodID: null,
-                form: {
+                form: this.$inertia.form({
                    name: null,
                    category: '',
                    photo: null,
@@ -140,7 +145,7 @@
                    discount: null,
                    totalPrice: null,
                    percentageDiscount: null
-                }
+                })
 
             }
         },
@@ -221,6 +226,8 @@
             updateEdit(nameValueChange, value, goodID) {
 
                 this.data.append(nameValueChange, value);
+                this.data.append('discount', this.form.discount);
+                this.data.append('price', this.form.price);
                 this.goodID = goodID;
             }
 
@@ -245,7 +252,16 @@
                         return "bg-purple-";
                 }
                 return "bg-red-"
-            }
+            },
+
+            error() {
+                if(Object.entries(this.$page.errors).length) {
+                    for (const key in this.$page.errors) {
+                        return this.$page.errors[key];
+                    }
+                }
+            },
+            
     },
 
         watch: {

@@ -13,6 +13,7 @@ use App\Contracts\Repositories\GoodsRepositoryInterface;
 use App\Contracts\Repositories\CategoryRepositoryInterface;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreGoodRequest;
+use App\Rules\PriceMoreDiscount;
 
 class GoodsController extends Controller
 {
@@ -96,6 +97,9 @@ class GoodsController extends Controller
     public function show(Goods $goods, $good_id)
     {
         $good = $this->goods->find($good_id);
+        if(!$good) {
+            abort(404);
+        }
         return Inertia::render('Admin/Dashboard/Goods/Show', ['good' => $good]);
     }
 
@@ -122,22 +126,27 @@ class GoodsController extends Controller
         $good = [];
 
         if($request->image) {
+            $request->validate(['image' => 'required|file|image']);
             $good['image_src'] = Storage::url($request->image->store('images', 'public'));
         }
 
         if($request->category) {
+            $request->validate(['category' => 'required|string|min:3|max:32']);
             $good['category_id'] = ($this->category->search(['id'],'name', $request->category))[0]->id;
         }
 
         if($request->name) {
+            $request->validate(['name' => 'required|string|min:3|max:64']);
             $good['name'] = $request->name;
         }
 
         if($request->price) {
+            $request->validate(['price' => ['required', 'numeric', 'min:1', 'max:9999999', new PriceMoreDiscount($request->discount)]]);
             $good['price'] = $request->price;
         }
 
         if($request->discount) {
+            $request->validate(['discount' => ['nullable', 'numeric', 'min:0', 'max:9999999']]);
             $good['discount'] = $request->discount;
         }
 

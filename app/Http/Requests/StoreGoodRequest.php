@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Rules\PriceMoreDiscount;
 
 class StoreGoodRequest extends FormRequest
 {
@@ -24,10 +25,10 @@ class StoreGoodRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'string', 'min:3'],
+            'name' => ['required', 'string', 'min:3', 'max:64'],
             'category' => ['required', 'string', 'min:3', 'max:32'],
             'image' => ['required', 'file', 'image'],
-            'price' => ['required', 'numeric', 'min:1', 'max:9999999'],
+            'price' => ['required', 'numeric', 'min:1', 'max:9999999', new PriceMoreDiscount($this->discount)],
             'discount' => ['nullable', 'numeric', 'min:0', 'max:9999999'],
         ];
     }
