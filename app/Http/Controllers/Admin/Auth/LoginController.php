@@ -52,7 +52,7 @@ class LoginController extends Controller
         
         //Redirect the admin...
 
-        //$this->validator($request);
+        $this->validator($request);
        
         if(Auth::guard('admin')->attempt($request->only('email','password'),$request->filled('remember'))){
             //Authentication passed...
@@ -88,8 +88,8 @@ class LoginController extends Controller
     {
         //validation rules.
         $rules = [
-            'email'    => 'required|email|exists:admins|min:5|max:191',
-            'password' => 'required|string|min:4|max:255',
+            'email'    => 'bail|required|email|exists:admins|min:5|max:191',
+            'password' => 'bail|required|string|min:4|max:255',
         ];
 
         //custom validation error messages.
@@ -109,8 +109,6 @@ class LoginController extends Controller
     private function loginFailed()
     {
         return redirect()
-        ->back()
-        ->withInput()
-        ->with('error','Login failed, please try again!');
+        ->back();
     }
 }

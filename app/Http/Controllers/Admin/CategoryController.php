@@ -46,6 +46,7 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate(['name' => 'required|string|min:3|max:32']);
         $resulte = $this->category->create(['name'=> $request->name]);
         return redirect()->back();
     }

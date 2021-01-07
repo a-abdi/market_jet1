@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use App\Contracts\Repositories\GoodsRepositoryInterface;
 use App\Contracts\Repositories\CategoryRepositoryInterface;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\StoreGoodRequest;
 
 class GoodsController extends Controller
 {
@@ -29,6 +30,10 @@ class GoodsController extends Controller
      */
     public function index(Request $request)
     {
+        $request->validate([
+            'offset' => 'required|numeric|min:0',
+            'limit' => 'required|numeric|min:0|max:10',
+            ]);
         return Inertia::render('Admin/Dashboard/Goods/List',
             [
                 'goods' => $this->goods->get_goods_bye_offset_limit(
@@ -59,7 +64,7 @@ class GoodsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreGoodRequest $request)
     {
         $goods_code = Str::random(8);
         $user_id = Auth::guard('admin')->id();

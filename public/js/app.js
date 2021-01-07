@@ -2281,7 +2281,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
-    error: Object,
+    // errors: Array,
     categories: Array
   },
   components: {
@@ -2291,7 +2291,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       photoPreview: null,
-      form: {
+      form: this.$inertia.form({
         name: null,
         category: '',
         photo: null,
@@ -2299,7 +2299,7 @@ __webpack_require__.r(__webpack_exports__);
         discount: null,
         totalPrice: null,
         percentageDiscount: null
-      }
+      })
     };
   },
   methods: {
@@ -2352,7 +2352,23 @@ __webpack_require__.r(__webpack_exports__);
       this.form.percentageDiscount = Math.round(this.form.discount / val * 1000) / 10 + "%";
     }
   },
-  computed: {},
+  computed: {
+    // errors() {
+    //     return this.$page.errors
+    // },
+    error: function error() {
+      // Object.entries(this.$page.errors).length === 0
+      if (Object.entries(this.$page.errors).length) {
+        // return this.$page.errors
+        // this.$page.errors.forEach(error => {
+        //     return error
+        // });
+        for (var key in this.$page.errors) {
+          return this.$page.errors[key];
+        }
+      }
+    }
+  },
   created: function created() {}
 });
 
@@ -4177,7 +4193,32 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: {},
   data: function data() {
     return {
       form: this.$inertia.form({
@@ -4186,6 +4227,11 @@ __webpack_require__.r(__webpack_exports__);
         remember: false
       })
     };
+  },
+  computed: {
+    errors: function errors() {
+      return this.form.__inertia.page.props.errors;
+    }
   }
 });
 
@@ -4224,6 +4270,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {},
@@ -4232,9 +4281,9 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      form: {
+      form: this.$inertia.form({
         name: null
-      }
+      })
     };
   },
   methods: {
@@ -4244,7 +4293,12 @@ __webpack_require__.r(__webpack_exports__);
       });
     }
   },
-  watch: {}
+  watch: {},
+  computed: {
+    errors: function errors() {
+      return this.form.__inertia.page.props.errors;
+    }
+  }
 });
 
 /***/ }),
@@ -25795,11 +25849,7 @@ var render = function() {
                           }
                         ],
                         staticClass: "w-full form-select roumded-md shadow-sm",
-                        attrs: {
-                          name: "category",
-                          id: "category",
-                          required: ""
-                        },
+                        attrs: { name: "category", id: "category" },
                         on: {
                           change: function($event) {
                             var $$selectedVal = Array.prototype.filter
@@ -25905,21 +25955,23 @@ var render = function() {
                   ]
                 ),
                 _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass:
-                      "col-start-1 col-span-8 mx-4 mb-8 opacity-25: form.processing",
-                    attrs: { disabled: _vm.form.processing }
-                  },
-                  [
-                    _c("jet-input-error", {
-                      staticClass: "mt-2",
-                      attrs: { message: _vm.error }
-                    })
-                  ],
-                  1
-                )
+                this.$page.errors
+                  ? _c(
+                      "div",
+                      {
+                        staticClass:
+                          "col-start-1 col-span-8 mx-4 mb-8 opacity-25: form.processing",
+                        attrs: { disabled: _vm.form.processing }
+                      },
+                      [
+                        _c("jet-input-error", {
+                          staticClass: "mt-2",
+                          attrs: { message: _vm.error }
+                        })
+                      ],
+                      1
+                    )
+                  : _vm._e()
               ]
             )
           ]),
@@ -26118,7 +26170,10 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c(
       "div",
-      { staticClass: "col-start-2 col-span-6 mx-2 sm:mx-0 text-gray-700 my-4" },
+      {
+        staticClass:
+          "col-start-2 col-span-6 mx-2 sm:mx-0 text-gray-700 mt-4 mb-8"
+      },
       [
         _c(
           "button",
@@ -29812,142 +29867,200 @@ var render = function() {
     "div",
     { staticClass: "bg-gray-100 h-screen flex items-center justify-center" },
     [
-      _c(
-        "form",
-        {
-          staticClass: "bg-white p-8 shadow rounded-lg max-w-md",
-          on: {
-            submit: function($event) {
-              $event.preventDefault()
-              return _vm.form.post("/admin/login")
-            }
-          }
-        },
-        [
-          _c(
-            "label",
-            { staticClass: "text-sm text-gray-500", attrs: { for: "email" } },
-            [_vm._v("Email")]
-          ),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.form.email,
-                expression: "form.email"
-              }
-            ],
-            staticClass: "w-full form-input rounded-md shadow-sm mb-4 mt-1",
-            attrs: { name: "email", id: "email", type: "text" },
-            domProps: { value: _vm.form.email },
+      _c("div", { staticClass: "w-full sm:max-w-md" }, [
+        _c(
+          "form",
+          {
+            staticClass: "bg-white p-8 shadow rounded-lg w-full",
             on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.$set(_vm.form, "email", $event.target.value)
+              submit: function($event) {
+                $event.preventDefault()
+                return _vm.form.post("/admin/login")
               }
             }
-          }),
-          _vm._v(" "),
-          _c(
-            "label",
-            {
-              staticClass: "text-sm text-gray-500",
-              attrs: { for: "password" }
-            },
-            [_vm._v("Password")]
-          ),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.form.password,
-                expression: "form.password"
-              }
-            ],
-            staticClass: "w-full form-input rounded-md shadow-sm my-1",
-            attrs: { name: "password", id: "password", type: "password" },
-            domProps: { value: _vm.form.password },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.$set(_vm.form, "password", $event.target.value)
-              }
-            }
-          }),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.form.remember,
-                expression: "form.remember"
-              }
-            ],
-            staticClass: "rounded-md shadow-sm mt-4 mb-1",
-            attrs: { name: "remember", id: "remember", type: "checkbox" },
-            domProps: {
-              checked: Array.isArray(_vm.form.remember)
-                ? _vm._i(_vm.form.remember, null) > -1
-                : _vm.form.remember
-            },
-            on: {
-              change: function($event) {
-                var $$a = _vm.form.remember,
-                  $$el = $event.target,
-                  $$c = $$el.checked ? true : false
-                if (Array.isArray($$a)) {
-                  var $$v = null,
-                    $$i = _vm._i($$a, $$v)
-                  if ($$el.checked) {
-                    $$i < 0 && _vm.$set(_vm.form, "remember", $$a.concat([$$v]))
-                  } else {
-                    $$i > -1 &&
-                      _vm.$set(
-                        _vm.form,
-                        "remember",
-                        $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                      )
+          },
+          [
+            _vm._m(0),
+            _vm._v(" "),
+            _c("div", { staticClass: "w-full" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.form.email,
+                    expression: "form.email"
                   }
-                } else {
-                  _vm.$set(_vm.form, "remember", $$c)
+                ],
+                staticClass: "w-full form-input rounded-md shadow-sm",
+                attrs: { name: "email", id: "email", type: "text" },
+                domProps: { value: _vm.form.email },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.form, "email", $event.target.value)
+                  }
                 }
-              }
-            }
-          }),
-          _vm._v(" "),
-          _c(
-            "label",
-            {
-              staticClass: "text-sm text-gray-600",
-              attrs: { for: "remember " }
-            },
-            [_vm._v("Remember me")]
-          ),
-          _vm._v(" "),
-          _c(
-            "button",
-            {
-              staticClass:
-                "inline-flex items-center place-content-center my-1 p-2 w-full bg-blue-500 border border-gray-200 rounded-md font-semibold text-xs text-gray-900 uppercase tracking-widest hover:bg-blue-700 active:bg-blue-600 focus:outline-none focus:border-blue-800 focus:shadow-outline-gray transition ease-in-out duration-150",
-              attrs: { type: "submit", disabled: _vm.form.processing }
-            },
-            [_vm._v("\n            Login\n        ")]
-          )
-        ]
-      )
+              })
+            ]),
+            _vm._v(" "),
+            _vm.errors.email
+              ? _c(
+                  "div",
+                  {
+                    staticClass:
+                      "w-full text-sm text-red-500 my-1 tracking-wider"
+                  },
+                  [
+                    _vm._v(
+                      "\n                " +
+                        _vm._s(_vm.errors.email) +
+                        "\n            "
+                    )
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm._m(1),
+            _vm._v(" "),
+            _c("div", { staticClass: "w-full" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.form.password,
+                    expression: "form.password"
+                  }
+                ],
+                staticClass: "w-full form-input rounded-md shadow-sm",
+                attrs: { name: "password", id: "password", type: "password" },
+                domProps: { value: _vm.form.password },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.form, "password", $event.target.value)
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _vm.errors.password
+              ? _c(
+                  "div",
+                  {
+                    staticClass: " w-full text-sm text-red-500 tracking-wider"
+                  },
+                  [
+                    _vm._v(
+                      "\n                " +
+                        _vm._s(_vm.errors.password) +
+                        "\n            "
+                    )
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _c("div", { staticClass: "w-full flex items-center mt-4" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.form.remember,
+                    expression: "form.remember"
+                  }
+                ],
+                staticClass: "rounded-md shadow-sm mr-2",
+                attrs: { name: "remember", id: "remember", type: "checkbox" },
+                domProps: {
+                  checked: Array.isArray(_vm.form.remember)
+                    ? _vm._i(_vm.form.remember, null) > -1
+                    : _vm.form.remember
+                },
+                on: {
+                  change: function($event) {
+                    var $$a = _vm.form.remember,
+                      $$el = $event.target,
+                      $$c = $$el.checked ? true : false
+                    if (Array.isArray($$a)) {
+                      var $$v = null,
+                        $$i = _vm._i($$a, $$v)
+                      if ($$el.checked) {
+                        $$i < 0 &&
+                          _vm.$set(_vm.form, "remember", $$a.concat([$$v]))
+                      } else {
+                        $$i > -1 &&
+                          _vm.$set(
+                            _vm.form,
+                            "remember",
+                            $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                          )
+                      }
+                    } else {
+                      _vm.$set(_vm.form, "remember", $$c)
+                    }
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c(
+                "label",
+                {
+                  staticClass: "text-sm text-gray-600",
+                  attrs: { for: "remember " }
+                },
+                [_vm._v("Remember me")]
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "flex items-center mt-4 justify-end" }, [
+              _c(
+                "button",
+                {
+                  staticClass:
+                    "inline-flex items-center place-content-center p-2 w-24 bg-blue-500 border border-gray-200 rounded-md font-semibold text-xs text-gray-900 uppercase tracking-widest hover:bg-blue-700 active:bg-blue-600 focus:outline-none focus:border-blue-800 focus:shadow-outline-gray transition ease-in-out duration-150",
+                  attrs: { type: "submit", disabled: _vm.form.processing }
+                },
+                [_vm._v("\n                    Login\n                ")]
+              )
+            ])
+          ]
+        )
+      ])
     ]
   )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "w-full" }, [
+      _c(
+        "label",
+        { staticClass: "text-sm text-gray-500", attrs: { for: "email" } },
+        [_vm._v("Email")]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "w-full mt-4" }, [
+      _c(
+        "label",
+        { staticClass: "text-sm text-gray-500", attrs: { for: "password" } },
+        [_vm._v("Password")]
+      )
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -30038,7 +30151,7 @@ var render = function() {
               "div",
               {
                 staticClass:
-                  "my-4 mx-1 sm:my-4 col-start-1 col-span-9 sm:col-start-7 sm:col-span-2 justify-center"
+                  "mt-4 mb-2 mx-1 sm:my-4 col-start-1 col-span-9 sm:col-start-7 sm:col-span-2 justify-center"
               },
               [
                 _c(
@@ -30051,7 +30164,24 @@ var render = function() {
                   [_vm._v("Add")]
                 )
               ]
-            )
+            ),
+            _vm._v(" "),
+            _vm.errors
+              ? _c(
+                  "div",
+                  {
+                    staticClass:
+                      "list-disc mx-1 mb-4 col-span-9 text-center text-red-500 text-sm"
+                  },
+                  [
+                    _vm._v(
+                      "\n                    " +
+                        _vm._s(_vm.errors.name) +
+                        "\n                "
+                    )
+                  ]
+                )
+              : _vm._e()
           ])
         ]
       )

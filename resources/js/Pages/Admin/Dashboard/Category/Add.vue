@@ -12,8 +12,11 @@
                     </div>
 
 
-                    <div class="my-4 mx-1 sm:my-4 col-start-1 col-span-9 sm:col-start-7 sm:col-span-2 justify-center">
+                    <div class="mt-4 mb-2 mx-1 sm:my-4 col-start-1 col-span-9 sm:col-start-7 sm:col-span-2 justify-center">
                         <button type="submit" class="w-full shadow p-2 bg-blue-400 border border-gray-200 rounded-md font-semibold text-xs text-gray-800 uppercase tracking-widest hover:bg-blue-500 active:bg-blue-400 focus:outline-none focus:border-blue-600 focus:shadow-outline-gray transition ease-in-out duration-250">Add</button>
+                    </div>
+                    <div v-if="errors" class="list-disc mx-1 mb-4 col-span-9 text-center text-red-500 text-sm">
+                        {{errors.name}}
                     </div>
                 </div>
             </form>
@@ -37,9 +40,9 @@
 
         data() { 
             return {
-                form: {
+                form: this.$inertia.form({
                     name: null
-                }
+                }),
             }
         },
 
@@ -51,6 +54,12 @@
 
         watch: {
 
+        },
+
+        computed: {
+            errors() {
+                return this.form.__inertia.page.props.errors
+            },
         },
     }
 </script>

@@ -21,7 +21,7 @@
                     </div>
 
                     <div class="col-start-1 col-span-6 mb-4 mx-2 sm:mx-0">
-                        <select name="category" id="category" v-model="form.category" class="w-full form-select roumded-md shadow-sm" required>
+                        <select name="category" id="category" v-model="form.category" class="w-full form-select roumded-md shadow-sm">
                             <option class="text-sm text-gray-600" v-for="(category) in categories" :key="category.name"  :value="category.name"> {{ category.name }} </option>
                         </select>
                     </div>
@@ -39,8 +39,8 @@
                         </button>
                     </div>
 
-                    <div class="col-start-1 col-span-8 mx-4 mb-8 opacity-25: form.processing" :disabled="form.processing">
-                            <jet-input-error :message="error" class="mt-2"/>
+                    <div v-if="this.$page.errors" class="col-start-1 col-span-8 mx-4 mb-8 opacity-25: form.processing" :disabled="form.processing">
+                        <jet-input-error :message="error" class="mt-2"/>
                     </div>
                 </div>
             </div>
@@ -74,7 +74,7 @@
                         <span class="text-md text-gray-900">{{ form.percentageDiscount }}</span>
                     </div>
 
-                    <div class="col-start-2 col-span-6 mx-2 sm:mx-0 text-gray-700 my-4">
+                    <div class="col-start-2 col-span-6 mx-2 sm:mx-0 text-gray-700 mt-4 mb-8">
                         <button type="submit"  class="inline-flex  items-center place-content-center p-0.5 h-10 w-full bg-blue-500 border border-gray-200 rounded-md font-semibold text-xs text-gray-900 uppercase tracking-widest hover:bg-blue-700 active:bg-blue-600 focus:outline-none focus:border-blue-800 focus:shadow-outline-gray transition ease-in-out duration-150">
                             Save
                         </button>  
@@ -91,7 +91,7 @@
 
     export default {
         props: {
-            error: Object,
+            // errors: Array,
             categories: Array,
         },
 
@@ -105,7 +105,7 @@
         data() { 
             return {
                 photoPreview: null,
-                form: {
+                form: this.$inertia.form({
                    name: null,
                    category: '',
                    photo: null,
@@ -113,7 +113,7 @@
                    discount: null,
                    totalPrice: null,
                    percentageDiscount: null
-                }
+                }),
             }
         },
 
@@ -143,7 +143,6 @@
 
                 this.$inertia.post('/admin/goods', data);
             },
-
         },
 
         watch: {
@@ -170,11 +169,28 @@
         },
 
         computed: {
-            
+            // errors() {
+            //     return this.$page.errors
+            // },
+
+            error() {
+                // Object.entries(this.$page.errors).length === 0
+                if(Object.entries(this.$page.errors).length) {
+                    // return this.$page.errors
+                    // this.$page.errors.forEach(error => {
+                    //     return error
+                    // });
+
+                    for (const key in this.$page.errors) {
+                        return this.$page.errors[key];
+                    }
+
+                }
+            }
         },
 
         created() {
-
+            
         },
     }
 </script>
