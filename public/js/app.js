@@ -2277,6 +2277,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2291,12 +2299,13 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       photoPreview: null,
+      formSuccess: false,
       form: this.$inertia.form({
         name: null,
         category: '',
         photo: null,
-        price: null,
-        discount: null,
+        price: 1,
+        discount: 0,
         totalPrice: null,
         percentageDiscount: null
       })
@@ -2315,17 +2324,34 @@ __webpack_require__.r(__webpack_exports__);
         _this.photoPreview = e.target.result;
       };
 
-      this.photo = this.$refs.photo.files[0];
+      this.form.photo = this.$refs.photo.files[0];
       reader.readAsDataURL(this.$refs.photo.files[0]);
     },
     submit: function submit() {
+      var _this2 = this;
+
+      this.formSuccess = false;
       var data = new FormData();
       data.append('name', this.form.name || '');
       data.append('category', this.form.category || '');
       data.append('price', this.form.price || '');
       data.append('discount', this.form.discount || '');
-      data.append('image', this.photo || '');
-      this.$inertia.post('/admin/goods', data);
+      data.append('image', this.form.photo || '');
+      this.$inertia.post('/admin/goods', data).then(function (response) {
+        if (!_this2.error) {
+          _this2.formSuccess = true;
+
+          _this2.formReset();
+        }
+      });
+    },
+    formReset: function formReset() {
+      this.form.name = null;
+      this.form.category = '';
+      this.form.photo = null;
+      this.form.price = 1;
+      this.form.discount = 0;
+      this.photoPreview = null;
     }
   },
   watch: {
@@ -2353,16 +2379,8 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   computed: {
-    // errors() {
-    //     return this.$page.errors
-    // },
     error: function error() {
-      // Object.entries(this.$page.errors).length === 0
       if (Object.entries(this.$page.errors).length) {
-        // return this.$page.errors
-        // this.$page.errors.forEach(error => {
-        //     return error
-        // });
         for (var key in this.$page.errors) {
           return this.$page.errors[key];
         }
@@ -4273,6 +4291,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {},
@@ -4286,13 +4308,7 @@ __webpack_require__.r(__webpack_exports__);
       })
     };
   },
-  methods: {
-    submit: function submit() {
-      this.$inertia.post('/admin/categories/', {
-        name: this.form.name
-      });
-    }
-  },
+  methods: {},
   watch: {},
   computed: {
     errors: function errors() {
@@ -25769,8 +25785,7 @@ var render = function() {
           _c(
             "div",
             {
-              staticClass:
-                "sm:col-span-4 col-span-9 flex items-center place-content-center"
+              staticClass: "col-span-4 flex items-center place-content-center"
             },
             [
               _c("span", {
@@ -25791,7 +25806,7 @@ var render = function() {
             ]
           ),
           _vm._v(" "),
-          _c("div", { staticClass: "sm:col-span-3 col-span-9" }, [
+          _c("div", { staticClass: "col-span-3" }, [
             _c(
               "div",
               {
@@ -25802,10 +25817,7 @@ var render = function() {
                 _vm._v(" "),
                 _c(
                   "div",
-                  {
-                    staticClass:
-                      "col-start-1 col-span-8 mb-4 mx-2 sm:col-span-6 sm:mx-0"
-                  },
+                  { staticClass: "col-start-1 mb-4 mx-2 col-span-6 sm:mx-0" },
                   [
                     _c("input", {
                       directives: [
@@ -25959,24 +25971,54 @@ var render = function() {
                   ? _c(
                       "div",
                       {
-                        staticClass:
-                          "col-start-1 col-span-8 mx-4 mb-8 opacity-25: form.processing",
-                        attrs: { disabled: _vm.form.processing }
+                        staticClass: "col-start-1 col-span-6 mb-8 rounded-md",
+                        class: {
+                          hidden: _vm.formSuccess,
+                          "bg-red-200": _vm.error
+                        }
                       },
                       [
-                        _c("jet-input-error", {
-                          staticClass: "mt-2",
-                          attrs: { message: _vm.error }
-                        })
-                      ],
-                      1
+                        _c(
+                          "p",
+                          {
+                            staticClass: "text-gray-500 p-1 text-sm text-center"
+                          },
+                          [
+                            _vm._v(
+                              "\n                        " +
+                                _vm._s(_vm.error) +
+                                "\n                    "
+                            )
+                          ]
+                        )
+                      ]
                     )
-                  : _vm._e()
+                  : _vm._e(),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "col-start-1 col-span-6 p-1 mb-8 rounded-md bg-green-200",
+                    class: { hidden: !_vm.formSuccess }
+                  },
+                  [
+                    _c(
+                      "p",
+                      { staticClass: "text-gray-500 text-sm text-center" },
+                      [
+                        _vm._v(
+                          "\n                        The product was successfully registered\n                    "
+                        )
+                      ]
+                    )
+                  ]
+                )
               ]
             )
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "sm:col-span-2 col-span-9" }, [
+          _c("div", { staticClass: "col-span-2" }, [
             _c(
               "div",
               { staticClass: "grid grid-cols-8 justify-center mt-4 gap-1" },
@@ -26119,10 +26161,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c(
       "div",
-      {
-        staticClass:
-          "col-start-1 col-span-8 sm:col-span-6 mt-4 mx-2 sm:mx-0 text-gray-700"
-      },
+      { staticClass: "col-start-1 col-span-6 mt-4 mx-2 sm:mx-0 text-gray-700" },
       [
         _c(
           "label",
@@ -30092,17 +30131,17 @@ var render = function() {
           on: {
             submit: function($event) {
               $event.preventDefault()
-              return _vm.submit($event)
+              return _vm.form.post("/admin/categories/")
             }
           }
         },
         [
-          _c("div", { staticClass: "grid grid-cols-9 gap-0 sm:gap-3" }, [
+          _c("div", { staticClass: "grid grid-cols-9" }, [
             _c(
               "div",
               {
                 staticClass:
-                  "mt-2 mx-1 sm:my-4 col-start-1 col-span-9 sm:col-start-2 sm:col-span-1 flex items-center"
+                  "mt-2 mx-1 sm:mt-4 sm:mb-2 col-start-1 col-span-9 sm:col-start-2 sm:col-span-1 flex items-center"
               },
               [
                 _c(
@@ -30120,7 +30159,7 @@ var render = function() {
               "div",
               {
                 staticClass:
-                  "m-1 sm:my-4 col-start-1 col-span-9 sm:col-start-3 sm:col-span-4 flex items-center"
+                  "m-1 sm:mt-4 sm:mb-2 col-start-1 col-span-9 sm:col-start-3 sm:col-span-4 flex items-center"
               },
               [
                 _c("input", {
@@ -30151,7 +30190,7 @@ var render = function() {
               "div",
               {
                 staticClass:
-                  "mt-4 mb-2 mx-1 sm:my-4 col-start-1 col-span-9 sm:col-start-7 sm:col-span-2 justify-center"
+                  "mt-4 mb-2 mx-1 sm:mt-4 sm:mb-2 col-start-1 col-span-9 sm:col-start-7 sm:col-span-2 justify-center"
               },
               [
                 _c(
@@ -30171,13 +30210,29 @@ var render = function() {
                   "div",
                   {
                     staticClass:
-                      "list-disc mx-1 mb-4 col-span-9 text-center text-red-500 text-sm"
+                      "mx-1 mb-2 col-span-9 sm:col-span-8 text-center text-red-500 text-sm",
+                    class: { hidden: _vm.form.successful }
                   },
                   [
                     _vm._v(
                       "\n                    " +
                         _vm._s(_vm.errors.name) +
                         "\n                "
+                    )
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.form.successful
+              ? _c(
+                  "div",
+                  {
+                    staticClass:
+                      "mx-1 mb-2 col-span-9 sm:col-span-8 text-center text-green-500 text-sm"
+                  },
+                  [
+                    _vm._v(
+                      "\n                    The category was successfully registered\n                "
                     )
                   ]
                 )

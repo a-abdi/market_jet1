@@ -1,22 +1,22 @@
 <template>
     <form @submit.prevent="submit">
         <div class="bg-white shadow rounded-md grid grid-cols-9">
-            <div class="sm:col-span-4 col-span-9 flex items-center place-content-center">
+            <div class="col-span-4 flex items-center place-content-center">
                 <span v-show="photoPreview" class="block  w-80 h-80 rounded-md"
                     :style="'background-size: cover; background-repeat: no-repeat; background-position: center center; background-image: url(\'' + photoPreview + '\');'">
                 </span>
             </div>
-            <div class="sm:col-span-3 col-span-9">
+            <div class="col-span-3">
                 <div class="flex mt-4 grid grid-cols-8 justify-center gap-1">
                     <div class="col-start-1 col-span-6 mt-4 mx-2 sm:mx-0 text-gray-700">
                         <label class="text-sm text-gray-600" for="name">Name</label>
                     </div>
 
-                    <div class="col-start-1 col-span-8 mb-4 mx-2 sm:col-span-6 sm:mx-0">
+                    <div class="col-start-1 mb-4 mx-2 col-span-6 sm:mx-0">
                         <input type="text" name="name" id="name" v-model="form.name" class="w-full form-input rounded-md shadow-sm">
                     </div>
 
-                    <div class="col-start-1 col-span-8 sm:col-span-6 mt-4 mx-2 sm:mx-0 text-gray-700">
+                    <div class="col-start-1 col-span-6 mt-4 mx-2 sm:mx-0 text-gray-700">
                         <label class="text-sm text-gray-600" for="category">Category</label>
                     </div>
 
@@ -39,13 +39,21 @@
                         </button>
                     </div>
 
-                    <div v-if="this.$page.errors" class="col-start-1 col-span-8 mx-4 mb-8 opacity-25: form.processing" :disabled="form.processing">
-                        <jet-input-error :message="error" class="mt-2"/>
+                    <div v-if="this.$page.errors" :class="{'hidden': formSuccess, 'bg-red-200': error}" class="col-start-1 col-span-6 mb-8 rounded-md">
+                        <p class="text-gray-500 p-1 text-sm text-center">
+                            {{ error }}
+                        </p>
+                    </div>
+                    
+                    <div :class="{'hidden': !formSuccess}" class="col-start-1 col-span-6 p-1 mb-8 rounded-md bg-green-200">
+                        <p class="text-gray-500 text-sm text-center">
+                            The product was successfully registered
+                        </p>
                     </div>
                 </div>
             </div>
 
-            <div class="sm:col-span-2 col-span-9">
+            <div class="col-span-2">
                 <div class="grid grid-cols-8 justify-center mt-4 gap-1">
                     <div class="col-start-2 col-span-6 mx-2 sm:mx-0 text-gray-700 mt-4">
                         <label class="text-sm text-gray-600" for="price">Price</label>
@@ -105,12 +113,13 @@
         data() { 
             return {
                 photoPreview: null,
+                formSuccess: false,
                 form: this.$inertia.form({
                    name: null,
                    category: '',
                    photo: null,
-                   price: null,
-                   discount: null,
+                   price: 1,
+                   discount: 0,
                    totalPrice: null,
                    percentageDiscount: null
                 }),
@@ -129,19 +138,35 @@
                 reader.onload = (e) => {
                     this.photoPreview = e.target.result;
                 };
-                this.photo = this.$refs.photo.files[0];
+                this.form.photo = this.$refs.photo.files[0];
                 reader.readAsDataURL(this.$refs.photo.files[0]);
             },
 
             submit() {
+                this.formSuccess= false;
                 var data = new FormData();
                 data.append('name', this.form.name         || '');
                 data.append('category', this.form.category || '');
                 data.append('price', this.form.price       || '');
                 data.append('discount', this.form.discount || '');
-                data.append('image', this.photo            || '');
+                data.append('image', this.form.photo            || '');
+                
+                this.$inertia.post('/admin/goods', data).then(response  => {
+                    if (! this.error) {
+                        this.formSuccess = true;
+                        this.formReset();
+                    }
+                });
+            },
 
-                this.$inertia.post('/admin/goods', data);
+            formReset() {
+                    this.form.name = null;
+                    this.form.category = '';
+                    this.form.photo = null;
+                    this.form.price = 1;
+                    this.form.discount = 0;
+                    this.photoPreview = null;
+
             },
         },
 
@@ -169,22 +194,11 @@
         },
 
         computed: {
-            // errors() {
-            //     return this.$page.errors
-            // },
-
             error() {
-                // Object.entries(this.$page.errors).length === 0
                 if(Object.entries(this.$page.errors).length) {
-                    // return this.$page.errors
-                    // this.$page.errors.forEach(error => {
-                    //     return error
-                    // });
-
                     for (const key in this.$page.errors) {
                         return this.$page.errors[key];
                     }
-
                 }
             }
         },

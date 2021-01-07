@@ -6,6 +6,7 @@ use App\Models\Goods;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use Route;
 use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
 use App\Contracts\Repositories\GoodsRepositoryInterface;
@@ -83,7 +84,7 @@ class GoodsController extends Controller
         ];
 
         $resulte = $this->goods->create($goods_object);
-        return redirect()->route('admin.goods.create');
+        return redirect()->back();
     }
 
     /**
