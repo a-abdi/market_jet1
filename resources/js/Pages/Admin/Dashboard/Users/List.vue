@@ -15,7 +15,10 @@
                     </thead>
                     <tbody>
                         <tr class="bg-green-200 border border-green-800" v-for="(user, i) in users" :key="user.id">
-                            <td class="">{{ user.id }}</td>
+                            <td class="">
+                                {{ user.id }}
+                            </td>
+                            
                             <td class="">
                                 <span :class="{'hidden': editUser.row[i]}">{{ user.name }}</span>
                                 <input type="text" :class="{ 'hidden': !editUser.row[i] }" v-model="form.name" @change="form.id = user.id" class="w-full text-sm text-gray-600 mx-1 px-2 py-0.5 focus:outline-none focus:ring border focus:border-blue-300 rounded">
@@ -55,6 +58,8 @@
                 </table>
             </form>
         </div>
+        <div v-if="error" class="w-full border border-gray-400 text-xs text-gray-500 bg-red-300 text-center"> {{ error }} </div>
+        <!-- <div v-if="!erorr" class="w-full border border-gray-400 text-xs text-gray-500 bg-green-300 text-center"> update successfull </div> -->
         <pagination :url="'/admin/users'" :offset="getOffset()" :limit="6"/>
     </index>
 </template>
@@ -79,11 +84,12 @@
             return {
                 updating: false,
                 row: false,
-                form: {
+                
+                form: this.$inertia.form({
                     id: null,
                     name: null,
                     email: null,
-                },
+                }),
                 editUser: {
                     row: {
                         0: false,
@@ -134,11 +140,21 @@
             updateCancel() {
                 this.updating = false
                 return false
-            }
+            },
         },
 
         watch: {
 
         },
+
+        computed: {
+            error() {
+                if(Object.entries(this.$page.errors).length) {
+                    for (const key in this.$page.errors) {
+                        return this.$page.errors[key];
+                    }
+                }
+            },
+        }
     }
 </script>

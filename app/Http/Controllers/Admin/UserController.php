@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Contracts\Repositories\UserRepositoryInterface;
+use App\Rules\UserUnique;
 use Inertia\Inertia;
 
 class UserController extends Controller
@@ -82,10 +83,20 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'name' => ['required', 'string'],
+            'email' => ['required', 'email', new UserUnique($id, $this->user)],
+        ]);
+
+        // if($id)
+        // $request->validate([
+        //     'email' => ['unique:users']
+        // ]);
+
         $user['name'] = $request->name;
         $user['email'] = $request->email;
         $this->user->update($user, $id);
-        return redirect()->route('admin.users.index', $request->all());
+        return back();
     }
 
     /**

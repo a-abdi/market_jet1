@@ -1,5 +1,5 @@
 <template>
-     <div class="grid grid-cols-9 py-3">
+     <div class="grid grid-cols-9 py-2">
             <div class="col-span-4 flex justify-end mx-1">
                 <img @click="previous_page()"  class="w-8 h-8 cursor-pointer" src="/img/previous.png" alt="">
             </div>

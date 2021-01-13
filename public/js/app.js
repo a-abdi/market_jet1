@@ -4848,6 +4848,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -4862,11 +4867,11 @@ __webpack_require__.r(__webpack_exports__);
     return {
       updating: false,
       row: false,
-      form: {
+      form: this.$inertia.form({
         id: null,
         name: null,
         email: null
-      },
+      }),
       editUser: {
         row: {
           0: false,
@@ -4913,7 +4918,16 @@ __webpack_require__.r(__webpack_exports__);
       return false;
     }
   },
-  watch: {}
+  watch: {},
+  computed: {
+    error: function error() {
+      if (Object.entries(this.$page.errors).length) {
+        for (var key in this.$page.errors) {
+          return this.$page.errors[key];
+        }
+      }
+    }
+  }
 });
 
 /***/ }),
@@ -26262,7 +26276,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "grid grid-cols-9 py-3" }, [
+  return _c("div", { staticClass: "grid grid-cols-9 py-2" }, [
     _c("div", { staticClass: "col-span-4 flex justify-end mx-1" }, [
       _c("img", {
         staticClass: "w-8 h-8 cursor-pointer",
@@ -31210,7 +31224,13 @@ var render = function() {
                           staticClass: "bg-green-200 border border-green-800"
                         },
                         [
-                          _c("td", {}, [_vm._v(_vm._s(user.id))]),
+                          _c("td", {}, [
+                            _vm._v(
+                              "\n                            " +
+                                _vm._s(user.id) +
+                                "\n                        "
+                            )
+                          ]),
                           _vm._v(" "),
                           _c("td", {}, [
                             _c(
@@ -31416,6 +31436,17 @@ var render = function() {
           )
         ]
       ),
+      _vm._v(" "),
+      _vm.error
+        ? _c(
+            "div",
+            {
+              staticClass:
+                "w-full border border-gray-400 text-xs text-gray-500 bg-red-300 text-center"
+            },
+            [_vm._v(" " + _vm._s(_vm.error) + " ")]
+          )
+        : _vm._e(),
       _vm._v(" "),
       _c("pagination", {
         attrs: { url: "/admin/users", offset: _vm.getOffset(), limit: 6 }
